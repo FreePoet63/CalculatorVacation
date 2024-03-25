@@ -8,6 +8,8 @@ import org.mockito.*;
 
 import java.time.LocalDate;
 
+import static com.neoflex.calculatorVacation.util.DataResultService.*;
+
 public class VacationServiceImplTest {
     private static final double THE_AVERAGE_NUMBER_OF_DAYS_IN_A_MONTH = 29.3;
 
@@ -24,14 +26,14 @@ public class VacationServiceImplTest {
 
     @Test
     public void testCalculateVacationPay() {
-        double salary = 9000.0;
-        int vacationDays = 21;
+        double salary = Double.parseDouble(getSalary());
+        int vacationDays = Integer.parseInt(getVacationDays());
         double expected = salary / THE_AVERAGE_NUMBER_OF_DAYS_IN_A_MONTH * vacationDays;
         expected = ((int) (expected * 100)) / 100;
 
-        String salaryString = "9000";
-        String vacationDaysString = "21";
-        double delta = 0.01;
+        String salaryString = getSalaryString();
+        String vacationDaysString = getVacationDaysString();
+        double delta = Double.parseDouble(getDelta());
 
         Mockito.when(validator.correctValueSalary(salaryString)).thenReturn(salary);
         Mockito.when(validator.correctValueVacationDays(vacationDaysString)).thenReturn(vacationDays);
@@ -43,16 +45,16 @@ public class VacationServiceImplTest {
 
     @Test
     public void testCalculateVacationPayWithHolidays() {
-        double salary = 9000.0;
-        int vacationDays = 21;
+        double salary = Double.parseDouble(getSalary());
+        int vacationDays = Integer.parseInt(getVacationDaysHoliday());
         double expected = salary / THE_AVERAGE_NUMBER_OF_DAYS_IN_A_MONTH * vacationDays;
         expected = ((int) (expected * 100)) / 100;
 
-        String salaryString = "9000";
-        String vacationDaysString = "21";
-        String startVacation = "2021-06-01";
-        String endVacation = "2021-06-21";
-        double delta = 0.01;
+        String salaryString = getSalaryString();
+        String vacationDaysString = getVacationDaysString();
+        String startVacation = getStartVacation();
+        String endVacation = getEndVacation();
+        double delta = Double.parseDouble(getDelta());
 
         Mockito.when(validator.correctValueSalary(salaryString)).thenReturn(salary);
         Mockito.when(validator.correctValueVacationDays(vacationDaysString)).thenReturn(vacationDays);
@@ -66,11 +68,11 @@ public class VacationServiceImplTest {
 
     @Test
     public void testCalculateVacationPayWithNegativeSalary() {
-        String salaryString = "-5000";
-        String vacationDaysString = "21";
+        String salaryString = getSalaryNegativeString();
+        String vacationDaysString = getVacationDaysString();
 
         Mockito.when(validator.correctValueSalary(salaryString))
-                .thenThrow(new IncorrectValueException());
+                .thenThrow(new IncorrectValueException("Incorrect value"));
 
         Assertions.assertThrows(IncorrectValueException.class,
                 () -> service.calculateVacationPay(salaryString, vacationDaysString));
@@ -78,13 +80,13 @@ public class VacationServiceImplTest {
 
     @Test
     public void testCalculateVacationPayWithZeroVacationDays() {
-        String salaryString = "9000";
-        String vacationDaysString = "12";
-        String startVacationString = "sos";
-        String endVacationString = "2023-07-12";
+        String salaryString = getSalaryString();
+        String vacationDaysString = getVacationDaysString();
+        String startVacationString = getStartVacationStringError();
+        String endVacationString = getEndVacation();
 
         Mockito.when(validator.correctValueVacationDays(vacationDaysString))
-                .thenThrow(new IncorrectValueException());
+                .thenThrow(new IncorrectValueException("Incorrect value"));
 
         Assertions.assertThrows(IncorrectValueException.class,
                 () -> service.calculateVacationPayWithHolidays(salaryString, vacationDaysString, startVacationString, endVacationString));

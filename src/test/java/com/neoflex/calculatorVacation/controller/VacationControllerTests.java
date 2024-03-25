@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static com.neoflex.calculatorVacation.util.DataResultController.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -30,9 +31,9 @@ public class VacationControllerTests {
 
     @Test
     public void testCalculateVacationPay_shouldReturnCalculatedValue() throws Exception {
-        String salary = "1000";
-        String vacationDays = "10";
-        double expectedVacationPay = 200;
+        String salary = getSalary();
+        String vacationDays = getVacationDays();
+        double expectedVacationPay = Double.parseDouble(getExpectedVacationPay());
 
         when(service.calculateVacationPay(salary, vacationDays)).thenReturn(expectedVacationPay);
 
@@ -48,11 +49,11 @@ public class VacationControllerTests {
 
     @Test
     public void testCalculateVacationPayWithHolidays_shouldReturnCalculatedValue() throws Exception {
-        String salary = "1000";
-        String vacationDays = "10";
-        String startVacation = "2023-08-01";
-        String endVacation = "2023-08-10";
-        double expectedVacationPay = 200;
+        String salary = getSalary();
+        String vacationDays = getVacationDays();
+        String startVacation = getStartVacation();
+        String endVacation = getEndVacation();
+        double expectedVacationPay = Double.parseDouble(getExpectedVacationPay());
 
         when(service.calculateVacationPayWithHolidays(salary, vacationDays, startVacation, endVacation)).thenReturn(expectedVacationPay);
 

@@ -5,8 +5,19 @@ import com.neoflex.calculatorVacation.validate.impl.ValidateDataVacationImpl;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static com.neoflex.calculatorVacation.logger.Log.info;
+
+/**
+ * The class VacationServiceImpl provides methods for calculating vacation pay and handling vacation periods.
+ *
+ * @author razlivinsky
+ * @since 13.03.2024
+ */
 @Service
 public class VacationServiceImpl implements VacationService {
     private static final double THE_AVERAGE_NUMBER_OF_DAYS_IN_A_MONTH = 29.3;
@@ -28,6 +39,13 @@ public class VacationServiceImpl implements VacationService {
             LocalDate.of(LocalDate.now().getYear(), 12, 31)
     );
 
+    /**
+     * Calculates the standard vacation pay based on the provided salary and number of vacation days.
+     *
+     * @param salary the salary of the individual
+     * @param vacationDays the number of vacation days taken
+     * @return the calculated vacation pay as a double
+     */
     @Override
     public double calculateVacationPay(String salary, String vacationDays) {
         double newSalary = new ValidateDataVacationImpl().correctValueSalary(salary);
@@ -37,6 +55,15 @@ public class VacationServiceImpl implements VacationService {
         return resultVacationPay;
     }
 
+    /**
+     * Calculates the vacation pay including holidays based on the salary, vacation days, start date, and end date provided.
+     *
+     * @param salary the salary of the individual
+     * @param vacationDays the number of vacation days taken
+     * @param startVacation the start date of the vacation
+     * @param endVacation the end date of the vacation
+     * @return the calculated vacation pay as a double including holidays
+     */
     @Override
     public double calculateVacationPayWithHolidays(
             String salary,
@@ -45,18 +72,21 @@ public class VacationServiceImpl implements VacationService {
             String endVacation
     ) {
         double newSalary = new ValidateDataVacationImpl().correctValueSalary(salary);
-        int newVacationDays = new ValidateDataVacationImpl().correctValueVacationDays(vacationDays);
-        double pay = newSalary / THE_AVERAGE_NUMBER_OF_DAYS_IN_A_MONTH * newVacationDays;
-        pay =  ((int) (pay * 100)) / 100;
-        long holidayCount = HOLIDAYS
-                .stream()
-                .filter(holiday ->
-                        holiday.isAfter(new ValidateDataVacationImpl().correctValueDate(startVacation)) &&
-                                holiday.isBefore(new ValidateDataVacationImpl().correctValueDate(endVacation)))
-                .count();
-        if (holidayCount > 0) {
-            System.out.println("Vacation extended by " + holidayCount + " days due to holiday");
-        }
+        new ValidateDataVacationImpl().correctValueVacationDays(vacationDays);
+        LocalDate startDate = new ValidateDataVacationImpl().correctValueDate(startVacation);
+        LocalDate endDate = new ValidateDataVacationImpl().correctValueDate(endVacation);
+
+        List<LocalDate> vacationDaysList = startDate.datesUntil(endDate.plusDays(1)).collect(Collectors.toList());
+        long holidayCount = HOLIDAYS.stream().filter(vacationDaysList::contains).count();
+
+        endDate = endDate.plusDays(holidayCount);
+
+        long newVacationDaysCount = startDate.until(endDate, ChronoUnit.DAYS);
+
+        double pay = newSalary / THE_AVERAGE_NUMBER_OF_DAYS_IN_A_MONTH * newVacationDaysCount;
+        pay = ((int) (pay * 100)) / 100;
+
+        info("Отпуск продлен на " + holidayCount + " дней из-за праздников.");
         return pay;
     }
 }
