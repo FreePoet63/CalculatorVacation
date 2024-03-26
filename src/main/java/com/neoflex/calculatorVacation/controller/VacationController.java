@@ -26,7 +26,7 @@ public class VacationController {
      * @param endVacation optional end date of the vacation
      * @return the calculated vacation pay as a double value
      */
-    @GetMapping("/calculate")
+    @GetMapping("/calculacte")
     public double calculateVacationPay(
             @RequestParam String salary,
             @RequestParam String vacationDays,
