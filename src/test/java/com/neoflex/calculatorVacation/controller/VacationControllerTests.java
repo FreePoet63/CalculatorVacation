@@ -1,7 +1,9 @@
 package com.neoflex.calculatorVacation.controller;
 
-import com.neoflex.calculatorVacation.service.impl.VacationServiceImpl;
-import org.junit.jupiter.api.*;
+import com.neoflex.calculatorVacation.service.VacationService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,7 +23,7 @@ public class VacationControllerTests {
     private WebApplicationContext context;
 
     @MockBean
-    private VacationServiceImpl service;
+    private VacationService service;
 
     private MockMvc mockMvc;
     @BeforeEach
@@ -37,7 +39,7 @@ public class VacationControllerTests {
 
         when(service.calculateVacationPay(salary, vacationDays)).thenReturn(expectedVacationPay);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/calculate")
+        mockMvc.perform(MockMvcRequestBuilders.get("/calculacte")
                         .param("salary", salary)
                         .param("vacationDays", vacationDays)
                 )
@@ -57,7 +59,7 @@ public class VacationControllerTests {
 
         when(service.calculateVacationPayWithHolidays(salary, vacationDays, startVacation, endVacation)).thenReturn(expectedVacationPay);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/calculate")
+        mockMvc.perform(MockMvcRequestBuilders.get("/calculacte")
                         .param("salary", salary)
                         .param("vacationDays", vacationDays)
                         .param("startVacation", startVacation)

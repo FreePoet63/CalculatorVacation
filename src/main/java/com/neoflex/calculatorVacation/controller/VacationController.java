@@ -1,6 +1,6 @@
 package com.neoflex.calculatorVacation.controller;
 
-import com.neoflex.calculatorVacation.service.impl.VacationServiceImpl;
+import com.neoflex.calculatorVacation.service.VacationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class VacationController {
-    private final VacationServiceImpl service;
+    private final VacationService service;
 
     /**
      * Calculate vacation pay based on the provided parameters.

@@ -2,6 +2,7 @@ package com.neoflex.calculatorVacation.validate.impl;
 
 import com.neoflex.calculatorVacation.exception.IncorrectValueException;
 import com.neoflex.calculatorVacation.validate.ValidateDataVacation;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +16,7 @@ import static com.neoflex.calculatorVacation.logger.Log.error;
  * @author razlivinsky
  * @since 13.03.2024
  */
+@Component
 public class ValidateDataVacationImpl implements ValidateDataVacation {
 
     /**

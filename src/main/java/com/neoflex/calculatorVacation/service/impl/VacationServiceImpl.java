@@ -1,7 +1,8 @@
 package com.neoflex.calculatorVacation.service.impl;
 
 import com.neoflex.calculatorVacation.service.VacationService;
-import com.neoflex.calculatorVacation.validate.impl.ValidateDataVacationImpl;
+import com.neoflex.calculatorVacation.validate.ValidateDataVacation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,7 +20,9 @@ import static com.neoflex.calculatorVacation.logger.Log.info;
  * @since 13.03.2024
  */
 @Service
+@RequiredArgsConstructor
 public class VacationServiceImpl implements VacationService {
+    private final ValidateDataVacation validateDataVacation;
     private static final double THE_AVERAGE_NUMBER_OF_DAYS_IN_A_MONTH = 29.3;
 
     private static final List<LocalDate> HOLIDAYS = Arrays.asList(
@@ -48,8 +51,8 @@ public class VacationServiceImpl implements VacationService {
      */
     @Override
     public double calculateVacationPay(String salary, String vacationDays) {
-        double newSalary = new ValidateDataVacationImpl().correctValueSalary(salary);
-        int newVacationDays = new ValidateDataVacationImpl().correctValueVacationDays(vacationDays);
+        double newSalary = validateDataVacation.correctValueSalary(salary);
+        int newVacationDays = validateDataVacation.correctValueVacationDays(vacationDays);
         double resultVacationPay = newSalary / THE_AVERAGE_NUMBER_OF_DAYS_IN_A_MONTH * newVacationDays;
         resultVacationPay = ((int) (resultVacationPay * 100)) / 100;
         return resultVacationPay;
@@ -71,10 +74,10 @@ public class VacationServiceImpl implements VacationService {
             String startVacation,
             String endVacation
     ) {
-        double newSalary = new ValidateDataVacationImpl().correctValueSalary(salary);
-        new ValidateDataVacationImpl().correctValueVacationDays(vacationDays);
-        LocalDate startDate = new ValidateDataVacationImpl().correctValueDate(startVacation);
-        LocalDate endDate = new ValidateDataVacationImpl().correctValueDate(endVacation);
+        double newSalary = validateDataVacation.correctValueSalary(salary);
+        validateDataVacation.correctValueVacationDays(vacationDays);
+        LocalDate startDate = validateDataVacation.correctValueDate(startVacation);
+        LocalDate endDate = validateDataVacation.correctValueDate(endVacation);
 
         List<LocalDate> vacationDaysList = startDate.datesUntil(endDate.plusDays(1)).collect(Collectors.toList());
         long holidayCount = HOLIDAYS.stream().filter(vacationDaysList::contains).count();

@@ -1,23 +1,29 @@
 package com.neoflex.calculatorVacation.service;
 
 import com.neoflex.calculatorVacation.exception.IncorrectValueException;
-import com.neoflex.calculatorVacation.service.impl.VacationServiceImpl;
-import com.neoflex.calculatorVacation.validate.impl.ValidateDataVacationImpl;
-import org.junit.jupiter.api.*;
-import org.mockito.*;
+import com.neoflex.calculatorVacation.validate.ValidateDataVacation;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
 
 import static com.neoflex.calculatorVacation.util.DataResultService.*;
 
-public class VacationServiceImplTest {
+@SpringBootTest
+public class VacationServiceTest {
     private static final double THE_AVERAGE_NUMBER_OF_DAYS_IN_A_MONTH = 29.3;
 
-    @Mock
-    private ValidateDataVacationImpl validator;
+    @Autowired
+    private VacationService service;
 
-    @InjectMocks
-    private VacationServiceImpl service;
+    @MockBean
+    private ValidateDataVacation validator;
 
     @BeforeEach
     public void setup() {
