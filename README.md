@@ -7,3 +7,15 @@ GET "/calculacte"
 Доп. задание: При запросе также можно указать точные дни ухода в отпуск, тогда должен проводиться рассчет отпускных с учётом праздников и выходных.
 
 Проверяться будет чистота кода, структура проекта, название полей\классов, правильность использования паттернов. Желательно написание юнит-тестов, проверяющих расчет.
+
+## Стек проекта
+OpenJDK Java 17
+
+Maven
+
+
+
+## Инструкция для запуска
+Приложение запускается с параметрами, по адресу http://localhost:8080/calculacte?salary={salary}&vacationDays={vacationDays} или 
+http://localhost:8080/calculacte?salary={salary}&vacationDays={vacationDays}&startVacation={startVacation}&endVacation={endVacation}
+
