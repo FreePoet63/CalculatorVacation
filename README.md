@@ -24,6 +24,22 @@ JUnit 5
 Mockito
 
 ## Инструкция для запуска
-Приложение запускается с параметрами, по адресу http://localhost:8080/calculacte?salary={salary}&vacationDays={vacationDays} или 
+Приложение запускается с параметрами, по адресу 
+
+http://localhost:8080/calculacte?salary={salary}&vacationDays={vacationDays} 
+
+или
+
 http://localhost:8080/calculacte?salary={salary}&vacationDays={vacationDays}&startVacation={startVacation}&endVacation={endVacation}
 
+{salary}, {vacationDays}, {startVacation}, {endVacation} - показаны, как пример, используются любые валидные параметры, например:
+
+http://localhost:8080/calculacte?salary=1000&vacationDays=10
+
+или 
+
+http://localhost:8080/calculacte?salary=1000}&vacationDays=10&startVacation=2024-01-01&endVacation=2024-01-10
+
+Параметры проверяются на валидность.
+
+Приложение покрыто на 80 процентов Unit - тестами.
