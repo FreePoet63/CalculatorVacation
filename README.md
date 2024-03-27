@@ -13,7 +13,15 @@ OpenJDK Java 17
 
 Maven
 
+Spring Boot
 
+Lombok
+
+Log4j2
+
+JUnit 5
+
+Mockito
 
 ## Инструкция для запуска
 Приложение запускается с параметрами, по адресу http://localhost:8080/calculacte?salary={salary}&vacationDays={vacationDays} или 
